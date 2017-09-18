@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './CSS/App.css';
 import './CSS/bootstrap.min.css'
-import { Route, Switch } from 'react-router-dom'
+import { Route, Switch, withRouter } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { fetchAllPosts } from './Actions'
@@ -23,8 +23,11 @@ class App extends Component {
       <Route exact path ='/' render={() => (
         <div className="row">
           <ul className='categories col-md-12'>
+              <li className="Category col-md-3 text-center">
+                <Link to="/">All Categories</Link>
+              </li>
             {categories.map((catType) => (
-              <li key={catType} className="Category col-md-4 text-center">
+              <li key={catType} className="Category col-md-3 text-center">
                 <Link to={`/${catType}`}>{catType}</Link>
               </li>
               ))}
@@ -32,7 +35,8 @@ class App extends Component {
         </div>
         )}/>
       <Switch>
-        <Route path ='/react' render={() => (
+        <Route exact path ='/' Component={App}/>
+        <Route path='/react' render={() => (
           <div className="row">
             REACT PAGE
           </div>
@@ -66,4 +70,4 @@ function mapDispatchToProps (dispatch) {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps) (App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps) (App));
