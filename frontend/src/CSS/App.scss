@@ -5,3 +5,24 @@
     display: inline-block;
   }
 }
+
+.posts {
+	list-style: none;
+	.Post {
+		border-style: solid;
+		margin-top: 10px;
+		h6 {
+			display: inline-block;
+			margin-right: 5px;
+		}
+		.post-timestamp {
+			color: #00b200 !important;
+		}
+		.post-author {
+			color: #4169E1 !important;
+		}
+		.post-id {
+			color: #A9A9A9 !important;
+		}
+	}
+}

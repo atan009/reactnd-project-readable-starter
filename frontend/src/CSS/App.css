@@ -3,4 +3,19 @@
   .categories .Category {
     display: inline-block; }
 
+.posts {
+  list-style: none; }
+  .posts .Post {
+    border-style: solid;
+    margin-top: 10px; }
+    .posts .Post h6 {
+      display: inline-block;
+      margin-right: 5px; }
+    .posts .Post .post-timestamp {
+      color: #00b200 !important; }
+    .posts .Post .post-author {
+      color: #4169E1 !important; }
+    .posts .Post .post-id {
+      color: #A9A9A9 !important; }
+
 /*# sourceMappingURL=App.css.map */

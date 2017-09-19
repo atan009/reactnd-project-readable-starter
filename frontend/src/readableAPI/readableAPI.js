@@ -15,3 +15,8 @@ const headers = {
 export const getAllPosts = () =>
 	fetch(`${api}/posts`, {headers})
 		.then(res => res.json())
+
+//get comments by id
+export const getCommentsByID = (id) =>
+	fetch(`${api}/posts/${id}/comments`, {headers})
+		.then(res => res.json())
