@@ -2,6 +2,7 @@ import { combineReducers } from 'redux'
 import {
 	GET_ALL_POSTS,
 	PLUS_POST,
+	MINUS_POST,
 	GET_ALL_COMMENTS
 } from '../Actions'
 
@@ -15,6 +16,14 @@ function Posts (state = {}, action) {
 			for (var i = 0; i < state.length; i++) {
 				if (state[i].id === action.post.id) {
 					state[i].voteScore++
+				}
+			}
+			return [...state]
+
+		case MINUS_POST:
+			for (i = 0; i < state.length; i++) {
+				if (state[i].id === action.post.id) {
+					state[i].voteScore--
 				}
 			}
 			return [...state]

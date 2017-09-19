@@ -3,6 +3,7 @@ import * as ReadableAPI from '../readableAPI/readableAPI'
 export const GET_ALL_POSTS = 'GET_ALL_POSTS'
 export const GET_ALL_COMMENTS = 'GET_ALL_COMMENTS'
 export const PLUS_POST = 'PLUS_POST'
+export const MINUS_POST = 'MINUS_POST'
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
@@ -29,5 +30,10 @@ export const receiveComments = (post,payload) => ({
 
 export const fetchPlusPost = (post) => ({
 	type: PLUS_POST,
+	post
+})
+
+export const fetchMinusPost = (post) => ({
+	type: MINUS_POST,
 	post
 })

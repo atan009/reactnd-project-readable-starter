@@ -4,7 +4,11 @@ import './CSS/bootstrap.min.css'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchAllPosts, fetchAllComments, fetchPlusPost } from './Actions'
+import { 
+  fetchAllPosts, 
+  fetchAllComments, 
+  fetchPlusPost,
+  fetchMinusPost } from './Actions'
 
 class App extends Component {
 
@@ -62,7 +66,7 @@ class App extends Component {
                   </Link>
                   <h6>comments({post.comments ? post.comments.length : 0})</h6>
                   <button onClick={self.props.upvotePost.bind(this,post)}>+</button>
-                  <button>-</button>
+                  <button onClick={self.props.downvotePost.bind(this,post)}>-</button>
                   <button>Edit</button>
                   <button>Delete</button>
                 </li>
@@ -106,7 +110,8 @@ function mapDispatchToProps (dispatch) {
   return {
     getPosts: () => dispatch(fetchAllPosts()),
     getComments: (post) => dispatch(fetchAllComments(post)),
-    upvotePost: (post) => dispatch(fetchPlusPost(post))
+    upvotePost: (post) => dispatch(fetchPlusPost(post)),
+    downvotePost: (post) => dispatch(fetchMinusPost(post))
   }
 }
 
