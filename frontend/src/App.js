@@ -4,8 +4,7 @@ import './CSS/bootstrap.min.css'
 import { Route, Switch, withRouter } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { fetchAllPosts } from './Actions'
-import { fetchAllComments } from './Actions'
+import { fetchAllPosts, fetchAllComments, fetchPlusPost } from './Actions'
 
 class App extends Component {
 
@@ -28,7 +27,7 @@ class App extends Component {
   render() {
     var self = this
     const categories = ['react', 'redux', 'udacity']
-    const { Posts, Comments } = this.props
+    const { Posts} = this.props
     console.log(this.props)
     console.log(Posts)
 
@@ -57,9 +56,15 @@ class App extends Component {
                   <h6 className="post-id">{post.id} </h6>
                   <h6 className="post-timestamp">{this.getTime(post.timestamp)} </h6>
                   <h6 className="post-author">{post.author}</h6>
-                  <h6 className="post-voteScore">{post.voteScore}</h6>
-                  <h5>{post.title}</h5>
-                  <p>{post.body}</p>
+                  <h6 className="post-voteScore">{post.voteScore}pts</h6>
+                  <Link to={`/${post.category}/${post.id}`}>
+                    <h5>{post.title}</h5>
+                  </Link>
+                  <h6>comments({post.comments ? post.comments.length : 0})</h6>
+                  <button onClick={self.props.upvotePost.bind(this,post)}>+</button>
+                  <button>-</button>
+                  <button>Edit</button>
+                  <button>Delete</button>
                 </li>
                 ))
               }
@@ -69,7 +74,7 @@ class App extends Component {
         )}/>
       <Switch>
         <Route exact path ='/' Component={App}/>
-        <Route path='/react' render={() => (
+        <Route exact path='/react' render={() => (
           <div className="row">
             REACT PAGE
           </div>
@@ -100,7 +105,8 @@ function mapStateToProps ({Posts, Comments}) {
 function mapDispatchToProps (dispatch) {
   return {
     getPosts: () => dispatch(fetchAllPosts()),
-    getComments: (post) => dispatch(fetchAllComments(post))
+    getComments: (post) => dispatch(fetchAllComments(post)),
+    upvotePost: (post) => dispatch(fetchPlusPost(post))
   }
 }
 
