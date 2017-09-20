@@ -4,6 +4,8 @@ export const GET_ALL_POSTS = 'GET_ALL_POSTS'
 export const GET_ALL_COMMENTS = 'GET_ALL_COMMENTS'
 export const PLUS_POST = 'PLUS_POST'
 export const MINUS_POST = 'MINUS_POST'
+export const SORT_BY_VOTE_SCORE = 'SORT_BY_VOTE_SCORE'
+export const SORT_BY_TIMESTAMP = 'SORT_BY_TIMESTAMP'
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
@@ -28,12 +30,32 @@ export const receiveComments = (post,payload) => ({
 	payload
 })
 
-export const fetchPlusPost = (post) => ({
+export const sortByVoteScore = (post) => ({
+	type: SORT_BY_VOTE_SCORE,
+	post
+})
+
+export const sortByTimestamp = (post) => ({
+	type: SORT_BY_TIMESTAMP,
+	post
+})
+
+export const fetchPlusPost = (post) => dispatch => (
+	ReadableAPI.votePost(post, "upVote")
+	.then(() => dispatch(receiveUpvote(post)))
+)
+
+export const receiveUpvote = (post) => ({
 	type: PLUS_POST,
 	post
 })
 
-export const fetchMinusPost = (post) => ({
+export const fetchMinusPost = (post) => dispatch => (
+	ReadableAPI.votePost(post, "downVote")
+	.then(() => dispatch(receiveDownvote(post)))
+)
+
+export const receiveDownvote = (post) => ({
 	type: MINUS_POST,
 	post
 })

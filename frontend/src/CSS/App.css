@@ -20,4 +20,7 @@
     .posts .Post button {
       margin-right: 5px; }
 
+input {
+  width: 100% !important; }
+
 /*# sourceMappingURL=App.css.map */
