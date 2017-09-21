@@ -35,3 +35,12 @@
 input {
 	width: 100% !important;
 }
+
+.addPost {
+	background: no-repeat bottom right;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	cursor: pointer;
+	display: block;
+}

@@ -23,4 +23,12 @@
 input {
   width: 100% !important; }
 
-/*# sourceMappingURL=App.css.map */
+.addPost {
+  background: no-repeat bottom right;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+  display: block; }
+
+/*# sourceMappingURL=mainPage.css.map */
