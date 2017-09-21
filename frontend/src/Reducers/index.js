@@ -6,7 +6,8 @@ import {
 	GET_ALL_COMMENTS,
 	SORT_BY_VOTE_SCORE,
 	SORT_BY_TIMESTAMP,
-	EDIT_POST
+	EDIT_POST,
+	ADD_POST
 } from '../Actions'
 
 function Posts (state = {}, action) {
@@ -75,6 +76,9 @@ function Posts (state = {}, action) {
 			}
 			console.log(action)
 			return[...state]
+
+		case ADD_POST:
+			return [...state,action.post]
 
 		default:
 			return state

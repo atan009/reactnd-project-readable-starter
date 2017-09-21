@@ -39,3 +39,18 @@ export const editPost = (post, newPostTitle, newPostBody) =>
 		})
 	})
 	.then(res => res.json())
+
+export const addPost = (post) =>
+	fetch(`${api}/posts`, {
+		method: "POST",
+		headers: headers,
+		body: JSON.stringify({
+			id: post.id,
+			timestamp: post.timestamp,
+			title: post.title,
+			body: post.body,
+			author: post.author,
+			category: post.category
+		})
+	})
+	.then(res => res.json())

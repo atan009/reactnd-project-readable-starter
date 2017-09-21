@@ -7,6 +7,7 @@ export const MINUS_POST = 'MINUS_POST'
 export const SORT_BY_VOTE_SCORE = 'SORT_BY_VOTE_SCORE'
 export const SORT_BY_TIMESTAMP = 'SORT_BY_TIMESTAMP'
 export const EDIT_POST = 'EDIT_POST'
+export const ADD_POST = 'ADD_POST'
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
@@ -71,4 +72,14 @@ export const receiveEditPost = (post, newPostTitle, newPostBody) => ({
 	post,
 	newPostTitle,
 	newPostBody
+})
+
+export const fetchAddPost = (post) => dispatch => (
+	ReadableAPI.addPost(post)
+	.then(() => dispatch(receiveAddPost(post)))
+)
+
+export const receiveAddPost = (post) => ({
+	type: ADD_POST,
+	post
 })
