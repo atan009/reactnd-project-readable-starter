@@ -10,7 +10,8 @@ import {
   fetchPlusPost,
   fetchMinusPost,
   sortByVoteScore,
-  sortByTimestamp } from './Actions'
+  sortByTimestamp,
+  fetchEditPost } from './Actions'
 
 const customStyles = {
   content : {
@@ -45,6 +46,7 @@ class App extends Component {
     this.setState({
       modalIsOpen: true,
       curPost: post,
+      newPostTitle: post.title,
       newPostBody: post.body})
   }
 
@@ -56,12 +58,17 @@ class App extends Component {
     this.setState({modalIsOpen: false})
   }
 
-  // editingPostTitle(value) {
-  //   this.setState({newPostTitle: value})
-  // }
+  editingPostTitle(value) {
+    this.setState({newPostTitle: value})
+  }
 
   editingPostBody(value) {
     this.setState({newPostBody: value})
+  }
+
+  submitEditPost(post, newPostTitle, newPostBody) {
+    this.props.editPost(this.state.curPost, this.state.newPostTitle, this.state.newPostBody)
+    this.closeModal()
   }
 
   componentWillMount() {
@@ -88,12 +95,6 @@ class App extends Component {
     } else if (value === "timestamp") {
       self.props.sortTimestamp()
     }
-  }
-
-  submitChange(post, newPostBody) {
-    console.log(post)
-    // console.log(newPostTitle)
-    console.log(newPostBody)
   }
 
   render() {
@@ -159,13 +160,12 @@ class App extends Component {
                         <h6>Timestamp: {this.state.curPost.timestamp}</h6>
                         <h6>Author: {this.state.curPost.author}</h6>
                         <h6>Score: {this.state.curPost.voteScore}</h6>
-                        <h6>Title: {this.state.curPost.title}</h6>
-                        {/*<h6>Title: <input className="editPostTitle" type="text" name="editPostTitle" value={this.state.newPostTitle} onChange={event => this.editingPostTitle(event.target.value)}/></h6>*/}
+                        {/*<h6>Title: {this.state.curPost.title}</h6>*/}
+                        <h6>Title: <input className="editPostTitle" type="text" name="editPostTitle" value={this.state.newPostTitle} onChange={event => this.editingPostTitle(event.target.value)}/></h6>
                         <h6>Body: <input className="editPostBody" type="text" name="editPostBody" value={this.state.newPostBody} onChange={event => this.editingPostBody(event.target.value)}/></h6>
                       </form>
-                      <button onClick={this.submitChange.bind(this, post, this.state.newPostBody)}>submit</button>
+                      <button onClick={this.submitEditPost.bind(this, this.state.curPost, this.state.newPostTitle, this.state.newPostBody)}>submit</button>
                     </Modal>
-
                   <button>Delete</button>
                 </li>
                 ))
@@ -211,7 +211,8 @@ function mapDispatchToProps (dispatch) {
     upvotePost: (post) => dispatch(fetchPlusPost(post)),
     downvotePost: (post) => dispatch(fetchMinusPost(post)),
     sortVoteScore: () => dispatch(sortByVoteScore()),
-    sortTimestamp: () => dispatch(sortByTimestamp())
+    sortTimestamp: () => dispatch(sortByTimestamp()),
+    editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody))
   }
 }
 

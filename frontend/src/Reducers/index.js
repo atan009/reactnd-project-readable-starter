@@ -5,7 +5,8 @@ import {
 	MINUS_POST,
 	GET_ALL_COMMENTS,
 	SORT_BY_VOTE_SCORE,
-	SORT_BY_TIMESTAMP
+	SORT_BY_TIMESTAMP,
+	EDIT_POST
 } from '../Actions'
 
 function Posts (state = {}, action) {
@@ -64,6 +65,16 @@ function Posts (state = {}, action) {
 				}
 			}
 			return [...state]
+
+		case EDIT_POST:
+			for (i = 0; i < state.length; i++) {
+				if (state[i].id === action.post.id) {
+					state[i].title = action.newPostTitle
+					state[i].body = action.newPostBody
+				}
+			}
+			console.log(action)
+			return[...state]
 
 		default:
 			return state

@@ -6,6 +6,7 @@ export const PLUS_POST = 'PLUS_POST'
 export const MINUS_POST = 'MINUS_POST'
 export const SORT_BY_VOTE_SCORE = 'SORT_BY_VOTE_SCORE'
 export const SORT_BY_TIMESTAMP = 'SORT_BY_TIMESTAMP'
+export const EDIT_POST = 'EDIT_POST'
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
@@ -58,4 +59,16 @@ export const fetchMinusPost = (post) => dispatch => (
 export const receiveDownvote = (post) => ({
 	type: MINUS_POST,
 	post
+})
+
+export const fetchEditPost = (post, newPostTitle, newPostBody) => dispatch => (
+	ReadableAPI.editPost(post, newPostTitle, newPostBody)
+	.then(() => dispatch(receiveEditPost(post, newPostTitle, newPostBody)))
+)
+
+export const receiveEditPost = (post, newPostTitle, newPostBody) => ({
+	type: EDIT_POST,
+	post,
+	newPostTitle,
+	newPostBody
 })
