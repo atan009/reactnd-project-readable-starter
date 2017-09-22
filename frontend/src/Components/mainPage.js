@@ -11,7 +11,8 @@ import {
   fetchMinusPost,
   sortByVoteScore,
   sortByTimestamp,
-  fetchEditPost } from '../Actions'
+  fetchEditPost,
+  fetchDelPost } from '../Actions'
 
 const customStyles = {
   content : {
@@ -166,7 +167,7 @@ class mainPage extends Component {
                       </form>
                       <button onClick={this.submitEditPost.bind(this, this.state.curPost, this.state.newPostTitle, this.state.newPostBody)}>submit</button>
                     </Modal>
-                  <button>Delete</button>
+                  <button onClick={self.props.deletePost.bind(this,post)}>Delete</button>
                 </li>
                 ))
               }
@@ -197,7 +198,8 @@ function mapDispatchToProps (dispatch) {
     downvotePost: (post) => dispatch(fetchMinusPost(post)),
     sortVoteScore: () => dispatch(sortByVoteScore()),
     sortTimestamp: () => dispatch(sortByTimestamp()),
-    editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody))
+    editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody)),
+    deletePost: (post) => dispatch(fetchDelPost(post))
   }
 }
 

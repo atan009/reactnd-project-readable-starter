@@ -7,7 +7,8 @@ import {
 	SORT_BY_VOTE_SCORE,
 	SORT_BY_TIMESTAMP,
 	EDIT_POST,
-	ADD_POST
+	ADD_POST,
+	DEL_POST
 } from '../Actions'
 
 function Posts (state = {}, action) {
@@ -74,11 +75,18 @@ function Posts (state = {}, action) {
 					state[i].body = action.newPostBody
 				}
 			}
-			console.log(action)
 			return[...state]
 
 		case ADD_POST:
 			return [...state,action.post]
+
+		case DEL_POST:
+			for (i = 0; i < state.length; i++) {
+				if (state[i].id === action.post.id) {
+					state.splice(i,1)
+				}
+			}
+			return [...state]
 
 		default:
 			return state

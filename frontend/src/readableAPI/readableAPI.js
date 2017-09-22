@@ -54,3 +54,10 @@ export const addPost = (post) =>
 		})
 	})
 	.then(res => res.json())
+
+export const delPost = (post) =>
+	fetch(`${api}/posts/${post.id}`, {
+		method: "DELETE",
+		headers: headers
+	})
+	.then(res => res.json());
