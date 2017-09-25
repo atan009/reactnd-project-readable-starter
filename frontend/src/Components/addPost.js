@@ -45,11 +45,11 @@ class addPost extends Component {
 	render () {
 		return (
 			<div>
-				<Link to="/">
+				{/*<Link to="/">
 					<button>
 						Back
 					</button>
-				</Link>
+				</Link>*/}
 				<form>
 	                <h6>Id: {this.state.id}</h6>
 	                <h6>Timestamp: {this.state.timestamp}</h6>

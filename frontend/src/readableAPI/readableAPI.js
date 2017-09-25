@@ -60,4 +60,11 @@ export const delPost = (post) =>
 		method: "DELETE",
 		headers: headers
 	})
-	.then(res => res.json());
+	.then(res => res.json())
+
+export const getFullPost = (post_id) =>
+	fetch(`${api}/posts/${post_id}`, {
+		method: "GET",
+		headers: headers
+	}) 
+	.then(res => res.json())

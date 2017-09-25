@@ -9,6 +9,7 @@ export const SORT_BY_TIMESTAMP = 'SORT_BY_TIMESTAMP'
 export const EDIT_POST = 'EDIT_POST'
 export const ADD_POST = 'ADD_POST'
 export const DEL_POST = 'DEL_POST'
+export const GET_FULL_POST = 'GET_FULL_POST'
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
@@ -92,5 +93,15 @@ export const fetchDelPost = (post) => dispatch => (
 
 export const receiveDelPost = (post) => ({
 	type: DEL_POST,
+	post
+})
+
+export const fetchGetFullPost = (post_id) => dispatch => (
+	ReadableAPI.getFullPost(post_id)
+	.then((post) => dispatch(receiveGetFullPost(post)))
+)
+
+export const receiveGetFullPost = (post) => ({
+	type: GET_FULL_POST,
 	post
 })

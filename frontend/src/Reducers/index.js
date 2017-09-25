@@ -8,7 +8,8 @@ import {
 	SORT_BY_TIMESTAMP,
 	EDIT_POST,
 	ADD_POST,
-	DEL_POST
+	DEL_POST,
+	GET_FULL_POST
 } from '../Actions'
 
 function Posts (state = {}, action) {
@@ -87,6 +88,11 @@ function Posts (state = {}, action) {
 				}
 			}
 			return [...state]
+
+		case GET_FULL_POST:
+			posts = []
+			posts[0] = action.post
+			return [...posts]
 
 		default:
 			return state

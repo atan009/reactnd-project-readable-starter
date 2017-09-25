@@ -1,18 +1,15 @@
-import React, { Component } from 'react';
-import '../CSS/mainPage.css';
-import '../CSS/bootstrap.min.css'
-import { Route, withRouter, Link } from 'react-router-dom'
+import React, { Component } from 'react'
+import { Link, Route } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
-import { 
-  fetchAllPosts, 
-  fetchAllComments, 
-  fetchPlusPost,
-  fetchMinusPost,
-  sortByVoteScore,
-  sortByTimestamp,
-  fetchEditPost,
-  fetchDelPost } from '../Actions'
+import {
+	fetchGetFullPost,
+  	fetchAllComments, 
+  	fetchPlusPost,
+  	fetchMinusPost,
+  	fetchEditPost,
+  	fetchDelPost
+} from '../Actions'
 
 const customStyles = {
   content : {
@@ -26,89 +23,71 @@ const customStyles = {
   }
 };
 
+class fullPost extends Component {
+	constructor() {
+	    super()
+		this.state = {
+		  	modalIsOpen: false,
+		   	curPost: [],
+		   	newPostTitle: "",
+		   	newPostBody: ""
+		}
 
-class mainPage extends Component {
+	    this.openModal = this.openModal.bind(this)
+	    this.closeModal = this.closeModal.bind(this)
+	}
 
-  constructor() {
-    super()
-    this.state = {
-      modalIsOpen: false,
-      curPost: [],
-      newPostTitle: "",
-      newPostBody: ""
-    }
+	openModal(post) {
+	    this.setState({
+	    	modalIsOpen: true,
+	      	curPost: post,
+	      	newPostTitle: post.title,
+	      	newPostBody: post.body
+	    })
+	}
 
-    this.openModal = this.openModal.bind(this)
-    this.afterOpenModal = this.afterOpenModal.bind(this)
-    this.closeModal = this.closeModal.bind(this)
-  }
+	closeModal() {
+	    this.setState({modalIsOpen: false})
+	}
 
-  openModal(post) {
-    this.setState({
-      modalIsOpen: true,
-      curPost: post,
-      newPostTitle: post.title,
-      newPostBody: post.body})
-  }
+	editingPostTitle(value) {
+	    this.setState({newPostTitle: value})
+	}
 
-  afterOpenModal() {
-    //don't think this is necessary
-  }
+	editingPostBody(value) {
+	    this.setState({newPostBody: value})
+	}
 
-  closeModal() {
-    this.setState({modalIsOpen: false})
-  }
+	submitEditPost(post, newPostTitle, newPostBody) {
+	    this.props.editPost(this.state.curPost, this.state.newPostTitle, this.state.newPostBody)
+	    this.closeModal()
+	}
 
-  editingPostTitle(value) {
-    this.setState({newPostTitle: value})
-  }
+	getTime(timestamp) {
+    	var date = new Date(timestamp)
+    	return date.getUTCFullYear() +
+      		'-' + ('0' + date.getUTCMonth()).slice(-2) +
+      		'-' + ('0' + date.getUTCDate()).slice(-2) + 
+      		' ' + ('0' + date.getUTCHours()).slice(-2) +
+      		':' + ('0' + date.getUTCMinutes()).slice(-2) +
+      		':' + ('0' + date.getUTCSeconds()).slice(-2)
+  	}
 
-  editingPostBody(value) {
-    this.setState({newPostBody: value})
-  }
+	componentDidMount() {
+		var self = this
+		this.props.getPost(this.props.match.params.post_id)
+		.then(action => self.props.getComments(action.post))
+		console.log(this.state)
+	}
 
-  submitEditPost(post, newPostTitle, newPostBody) {
-    this.props.editPost(this.state.curPost, this.state.newPostTitle, this.state.newPostBody)
-    this.closeModal()
-  }
-
-  componentDidMount() {
-    var self = this
-    console.log(this.props)
-    this.props.getPosts()
-    .then(posts => posts.payload.map(post => self.props.getComments(post)))
-  }
-
-  getTime(timestamp) {
-    var date = new Date(timestamp)
-    return date.getUTCFullYear() +
-      '-' + ('0' + date.getUTCMonth()).slice(-2) +
-      '-' + ('0' + date.getUTCDate()).slice(-2) + 
-      ' ' + ('0' + date.getUTCHours()).slice(-2) +
-      ':' + ('0' + date.getUTCMinutes()).slice(-2) +
-      ':' + ('0' + date.getUTCSeconds()).slice(-2)
-  }
-
-  changeSort(value) {
-    var self = this
-    if (value === "voteScore") {
-      self.props.sortVoteScore()
-    } else if (value === "timestamp") {
-      self.props.sortTimestamp()
-    }
-  }
-
-  render() {
-    var self = this
-    const categories = ['react', 'redux', 'udacity']
-    const { Posts } = this.props
-    console.log(this.props)
-    console.log(Posts)
+	render () {
+		var self = this
+	    const categories = ['react', 'redux', 'udacity']
+	    const { Posts } = this.props
+	    console.log(Posts)
 
     return (
-      
       <div className="container">
-      <Route exact path ='/' render={() => (
         <div>
           <div className="row">
             <ul className='categories col-md-12'>
@@ -121,13 +100,6 @@ class mainPage extends Component {
                 </li>
                 ))}
             </ul>
-          </div>
-
-          <div className="row">
-            <select onChange={event => this.changeSort(event.target.value)} className="Sort col-md-12">
-              <option value="voteScore">voteScore</option>
-              <option value="timestamp">timestamp</option>
-            </select>
           </div>
 
           <div className="row">
@@ -176,10 +148,9 @@ class mainPage extends Component {
             <Link to="/addPost"><button className="addPost"> Add Post</button></Link>
           </div>
         </div>
-        )}/>
       </div>
-    );
-  }
+		);
+	}
 }
 
 function mapStateToProps ({Posts, Comments}) {
@@ -190,16 +161,14 @@ function mapStateToProps ({Posts, Comments}) {
 }
 
 function mapDispatchToProps (dispatch) {
-  return {
-    getPosts: () => dispatch(fetchAllPosts()),
-    getComments: (post) => dispatch(fetchAllComments(post)),
-    upvotePost: (post) => dispatch(fetchPlusPost(post)),
-    downvotePost: (post) => dispatch(fetchMinusPost(post)),
-    sortVoteScore: () => dispatch(sortByVoteScore()),
-    sortTimestamp: () => dispatch(sortByTimestamp()),
-    editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody)),
-    deletePost: (post) => dispatch(fetchDelPost(post))
-  }
+	return {
+		getPost: (post_id) => dispatch(fetchGetFullPost(post_id)),
+		getComments: (post) => dispatch(fetchAllComments(post)),
+	    upvotePost: (post) => dispatch(fetchPlusPost(post)),
+	    downvotePost: (post) => dispatch(fetchMinusPost(post)),
+	    editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody)),
+	    deletePost: (post) => dispatch(fetchDelPost(post))
+	}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps) (mainPage));
+export default connect (mapStateToProps, mapDispatchToProps) (fullPost)
