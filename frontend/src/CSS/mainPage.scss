@@ -44,3 +44,24 @@ input {
 	cursor: pointer;
 	display: block;
 }
+
+.comments {
+	list-style: none;
+	.Comment {
+		border-style: solid;
+		margin-top: 10px;
+		h6 {
+			display: inline-block;
+			margin-right: 5px;
+		}
+		.comment-timestamp {
+			color: #00b200 !important;
+		}
+		.comment-author {
+			color: #4169E1 !important;
+		}
+		.comment-id {
+			color: #A9A9A9 !important;
+		}
+	}
+}

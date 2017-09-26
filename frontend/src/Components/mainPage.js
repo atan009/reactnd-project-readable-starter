@@ -12,7 +12,7 @@ import {
   sortByVoteScore,
   sortByTimestamp,
   fetchEditPost,
-  fetchDelPost } from '../Actions'
+  fetchDelPost} from '../Actions'
 
 const customStyles = {
   content : {
@@ -132,7 +132,7 @@ class mainPage extends Component {
 
           <div className="row">
             <ul className="posts col-md-12">
-              {Posts.length && Posts.map((post) => (
+              {Posts.Posts && Posts.Posts.map((post) => (
                 <li key={post.id} className="Post">
                   <h6 className="post-id">{post.id} </h6>
                   <h6 className="post-timestamp">{this.getTime(post.timestamp)} </h6>
@@ -182,10 +182,9 @@ class mainPage extends Component {
   }
 }
 
-function mapStateToProps ({Posts, Comments}) {
+function mapStateToProps ({Posts}) {
   return {
-    Posts,
-    Comments
+    Posts
   }
 }
 
@@ -198,7 +197,7 @@ function mapDispatchToProps (dispatch) {
     sortVoteScore: () => dispatch(sortByVoteScore()),
     sortTimestamp: () => dispatch(sortByTimestamp()),
     editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody)),
-    deletePost: (post) => dispatch(fetchDelPost(post))
+    deletePost: (post) => dispatch(fetchDelPost(post)),
   }
 }
 

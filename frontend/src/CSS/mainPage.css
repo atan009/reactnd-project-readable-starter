@@ -31,4 +31,19 @@ input {
   cursor: pointer;
   display: block; }
 
+.comments {
+  list-style: none; }
+  .comments .Comment {
+    border-style: solid;
+    margin-top: 10px; }
+    .comments .Comment h6 {
+      display: inline-block;
+      margin-right: 5px; }
+    .comments .Comment .comment-timestamp {
+      color: #00b200 !important; }
+    .comments .Comment .comment-author {
+      color: #4169E1 !important; }
+    .comments .Comment .comment-id {
+      color: #A9A9A9 !important; }
+
 /*# sourceMappingURL=mainPage.css.map */

@@ -68,3 +68,28 @@ export const getFullPost = (post_id) =>
 		headers: headers
 	}) 
 	.then(res => res.json())
+
+export const voteComment = (comment, option) =>
+	fetch(`${api}/comments/${comment.id}`, {
+		method: "POST",
+		headers: headers,
+		body: JSON.stringify({ option: option})
+	})
+	.then(res => res.json())
+
+export const editComment = (comment, newCommentBody) =>
+	fetch(`${api}/comments/${comment.id}`, {
+		method: "PUT",
+		headers: headers,
+		body: JSON.stringify({
+			body: newCommentBody
+		})
+	})
+	.then(res => res.json())
+
+export const delComment = (comment) =>
+	fetch(`${api}/comments/${comment.id}`, {
+		method: "DELETE",
+		headers: headers,
+	})
+	.then(res => res.json())

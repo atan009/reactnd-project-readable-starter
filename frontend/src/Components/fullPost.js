@@ -8,7 +8,12 @@ import {
   	fetchPlusPost,
   	fetchMinusPost,
   	fetchEditPost,
-  	fetchDelPost
+  	fetchDelPost,
+  	fetchPlusComment,
+  	fetchMinusComment,
+  	fetchEditComment,
+  	fetchDelComment,
+  	fetchSetComments
 } from '../Actions'
 
 const customStyles = {
@@ -63,6 +68,11 @@ class fullPost extends Component {
 	    this.closeModal()
 	}
 
+	submitEditComment(comment, newCommentBody) {
+		this.props.editComment(this.state.curPost, newCommentBody)
+		this.closeModal()
+	}
+
 	getTime(timestamp) {
     	var date = new Date(timestamp)
     	return date.getUTCFullYear() +
@@ -77,6 +87,7 @@ class fullPost extends Component {
 		var self = this
 		this.props.getPost(this.props.match.params.post_id)
 		.then(action => self.props.getComments(action.post))
+		.then(action => self.props.setComments(action.post))
 		console.log(this.state)
 	}
 
@@ -104,47 +115,88 @@ class fullPost extends Component {
 
           <div className="row">
             <ul className="posts col-md-12">
-              {Posts.length && Posts.map((post) => (
-                <li key={post.id} className="Post">
-                  <h6 className="post-id">{post.id} </h6>
-                  <h6 className="post-timestamp">{this.getTime(post.timestamp)} </h6>
-                  <h6 className="post-author">{post.author}</h6>
-                  <h6 className="post-voteScore">{post.voteScore}pts</h6>
-                  <Link to={`/${post.category}/${post.id}`}>
-                    <h5>{post.title}</h5>
-                  </Link>
-                  <h6>comments({post.comments ? post.comments.length : 0})</h6>
-                  <button onClick={self.props.upvotePost.bind(this,post)}>+</button>
-                  <button onClick={self.props.downvotePost.bind(this,post)}>-</button>
-                  <button className="editPost" onClick={self.openModal.bind(this,post)}>Edit</button>
-                    <Modal
-                      isOpen={this.state.modalIsOpen}
-                      onAfterOpen={this.afterOpenModal}
-                      onRequestClose={this.closeModal}
-                      style={customStyles}
-                      contentLabel="Example Modal"
-                    >
+              {Posts.Posts && Posts.Posts.map((post) => (
+	                <li key={post.id} className="Post">
+	                  <h6 className="post-id">{post.id} </h6>
+	                  <h6 className="post-timestamp">{this.getTime(post.timestamp)} </h6>
+	                  <h6 className="post-author">{post.author}</h6>
+	                  <h6 className="post-voteScore">{post.voteScore}pts</h6>
+	                  <Link to={`/${post.category}/${post.id}`}>
+	                    <h5>{post.title}</h5>
+	                  </Link>
+	                  <h6>comments({Posts.Comments ? Posts.Comments.length : 0})</h6>
+	                  <button onClick={self.props.upvotePost.bind(this,post)}>+</button>
+	                  <button onClick={self.props.downvotePost.bind(this,post)}>-</button>
+	                  <button className="editPost" onClick={self.openModal.bind(this,post)}>Edit</button>
+	                    <Modal
+	                      isOpen={this.state.modalIsOpen}
+	                      onAfterOpen={this.afterOpenModal}
+	                      onRequestClose={this.closeModal}
+	                      style={customStyles}
+	                      contentLabel="Example Modal"
+	                    >
 
-                      <h2 ref={subtitle => this.subtitle = subtitle}>Edit</h2>
-                      <button onClick={this.closeModal}>close</button>
-                      <div>Click submit to confirm changes</div>
-                      <form>
-                        <h6>Id: {this.state.curPost.id}</h6>
-                        <h6>Timestamp: {this.state.curPost.timestamp}</h6>
-                        <h6>Author: {this.state.curPost.author}</h6>
-                        <h6>Score: {this.state.curPost.voteScore}</h6>
-                        <h6>Title: <input className="editPostTitle" type="text" name="editPostTitle" value={this.state.newPostTitle} onChange={event => this.editingPostTitle(event.target.value)}/></h6>
-                        <h6>Body: <input className="editPostBody" type="text" name="editPostBody" value={this.state.newPostBody} onChange={event => this.editingPostBody(event.target.value)}/></h6>
-                      </form>
-                      <button onClick={this.submitEditPost.bind(this, this.state.curPost, this.state.newPostTitle, this.state.newPostBody)}>submit</button>
-                    </Modal>
-                  <button onClick={self.props.deletePost.bind(this,post)}>Delete</button>
-                </li>
+	                      <h2 ref={subtitle => this.subtitle = subtitle}>Edit</h2>
+	                      <button onClick={this.closeModal}>close</button>
+	                      <div>Click submit to confirm changes</div>
+	                      <form>
+	                        <h6>Id: {this.state.curPost.id}</h6>
+	                        <h6>Timestamp: {this.state.curPost.timestamp}</h6>
+	                        <h6>Author: {this.state.curPost.author}</h6>
+	                        <h6>Score: {this.state.curPost.voteScore}</h6>
+	                        <h6>Title: <input className="editPostTitle" type="text" name="editPostTitle" value={this.state.newPostTitle} onChange={event => this.editingPostTitle(event.target.value)}/></h6>
+	                        <h6>Body: <input className="editPostBody" type="text" name="editPostBody" value={this.state.newPostBody} onChange={event => this.editingPostBody(event.target.value)}/></h6>
+	                      </form>
+	                      <button onClick={this.submitEditPost.bind(this, this.state.curPost, this.state.newPostTitle, this.state.newPostBody)}>submit</button>
+	                    </Modal>
+	                  <button onClick={self.props.deletePost.bind(this,post)}>Delete</button>
+	                </li>
                 ))
               }
             </ul>
           </div>
+
+          <div className="row">
+          	<div className="placeHolder col-md-1">
+          	</div>
+          	<ul className="comments col-md-11">
+          		{Posts.Comments && Posts.Comments.map((comment) => (
+          			<li key={comment.id} className="Comment">
+          				<h6 className="comment-id">{comment.id} </h6>
+	                  	<h6 className="comment-timestamp">{this.getTime(comment.timestamp)} </h6>
+	                  	<h6 className="comment-author">{comment.author}</h6>
+	                  	<h6 className="comment-voteScore">{comment.voteScore}pts</h6>
+	                    <h5 className="comment-body">{comment.body}</h5>
+	                    <button onClick={self.props.upvoteComment.bind(this,comment)}>+</button>
+	                  	<button onClick={self.props.downvoteComment.bind(this,comment)}>-</button>
+	                  	<button className="editPost" onClick={self.openModal.bind(this,comment)}>Edit</button>
+	                    <Modal
+	                      isOpen={this.state.modalIsOpen}
+	                      onAfterOpen={this.afterOpenModal}
+	                      onRequestClose={this.closeModal}
+	                      style={customStyles}
+	                      contentLabel="Example Modal"
+	                    >
+
+	                      <h2 ref={subtitle => this.subtitle = subtitle}>Edit</h2>
+	                      <button onClick={this.closeModal}>close</button>
+	                      <div>Click submit to confirm changes</div>
+	                      <form>
+	                        <h6>Id: {this.state.curPost.id}</h6>
+	                        <h6>Timestamp: {this.state.curPost.timestamp}</h6>
+	                        <h6>Author: {this.state.curPost.author}</h6>
+	                        <h6>Score: {this.state.curPost.voteScore}</h6>
+	                        <h6>Body: <input className="editPostBody" type="text" name="editPostBody" value={this.state.newPostBody} onChange={event => this.editingPostBody(event.target.value)}/></h6>
+	                      </form>
+	                      <button onClick={this.submitEditComment.bind(this, this.state.curPost, this.state.newPostBody)}>submit</button>
+	                    </Modal>
+	                    <button onClick={self.props.deleteComment.bind(this,comment)}>Delete</button>
+          			</li>
+          			))}
+          	</ul>
+          </div>
           <div>
+      {/*change this to addComment*/}
             <Link to="/addPost"><button className="addPost"> Add Post</button></Link>
           </div>
         </div>
@@ -153,10 +205,9 @@ class fullPost extends Component {
 	}
 }
 
-function mapStateToProps ({Posts, Comments}) {
+function mapStateToProps ({Posts}) {
   return {
-    Posts,
-    Comments
+    Posts
   }
 }
 
@@ -167,7 +218,12 @@ function mapDispatchToProps (dispatch) {
 	    upvotePost: (post) => dispatch(fetchPlusPost(post)),
 	    downvotePost: (post) => dispatch(fetchMinusPost(post)),
 	    editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody)),
-	    deletePost: (post) => dispatch(fetchDelPost(post))
+	    deletePost: (post) => dispatch(fetchDelPost(post)),
+	    upvoteComment: (comment) => dispatch(fetchPlusComment(comment)),
+	    downvoteComment: (comment) => dispatch(fetchMinusComment(comment)),
+	    editComment: (comment, newCommentBody) => dispatch(fetchEditComment(comment, newCommentBody)),
+	    deleteComment: (comment) => dispatch(fetchDelComment(comment)),
+	    setComments: (post) => dispatch(fetchSetComments(post))
 	}
 }
 

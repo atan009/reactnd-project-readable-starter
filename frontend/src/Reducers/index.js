@@ -9,10 +9,22 @@ import {
 	EDIT_POST,
 	ADD_POST,
 	DEL_POST,
-	GET_FULL_POST
+	SET_COMMENTS,
+	GET_FULL_POST,
+	PLUS_COMMENT,
+	MINUS_COMMENT,
+	EDIT_COMMENT,
+	DEL_COMMENT
 } from '../Actions'
 
-function Posts (state = {}, action) {
+const initialState = {
+	Posts: [],
+	sortBy: 'voteScore',
+	currentPost: null,
+	Comments: []
+}
+
+function Posts (state = initialState, action) {
 
 	switch (action.type) {
 		case GET_ALL_POSTS:
@@ -27,84 +39,138 @@ function Posts (state = {}, action) {
 					}
 				}
 			}
-			return [...posts]
+			console.log(state)
+			return {
+				...state,
+				Posts: posts
+			}
 
 		case SORT_BY_VOTE_SCORE:
-			for (i = 0; i + 1 < state.length; i++) {
-				for (k = i+1; k < state.length; k++) {
-					if (state[i].voteScore < state[k].voteScore) {
-						tempPost = state[i]
-						state[i] = state[k]
-						state[k] = tempPost
+			var sbvcPosts = state.Posts
+			for (i = 0; i + 1 < sbvcPosts.length; i++) {
+				for (k = i+1; k < sbvcPosts.length; k++) {
+					if (sbvcPosts[i].voteScore < sbvcPosts[k].voteScore) {
+						tempPost = sbvcPosts[i]
+						sbvcPosts[i] = sbvcPosts[k]
+						sbvcPosts[k] = tempPost
 					}
 				}
 			}
-			return [...state]
+			return {
+				...state,
+				Posts: sbvcPosts,
+				sortBy: "voteScore"
+			}
 
 		case SORT_BY_TIMESTAMP:
-			for (i = 0; i + 1 < state.length; i++) {
-				for (k = i+1; k < state.length; k++) {
-					if (state[i].timestamp < state[k].timestamp) {
-						tempPost = state[i]
-						state[i] = state[k]
-						state[k] = tempPost
+			var sbtsPosts = state.Posts
+			for (i = 0; i + 1 < sbtsPosts.length; i++) {
+				for (k = i+1; k < sbtsPosts.length; k++) {
+					if (sbtsPosts[i].timestamp < sbtsPosts[k].timestamp) {
+						tempPost = sbtsPosts[i]
+						sbtsPosts[i] = sbtsPosts[k]
+						sbtsPosts[k] = tempPost
 					}
 				}
 			}
-			return [...state]
+			return {
+				...state,
+				sortBy: "timestamp"
+			}
 
 		case PLUS_POST:
-			for (i = 0; i < state.length; i++) {
-				if (state[i].id === action.post.id) {
-					state[i].voteScore++
-				}
+			action.post.voteScore++
+			return {
+				...state,
+				Posts: state.Posts.map(
+					post => (post.id === action.post.id ? action.post : post))
 			}
-			return [...state]
 
 		case MINUS_POST:
-			for (i = 0; i < state.length; i++) {
-				if (state[i].id === action.post.id) {
-					state[i].voteScore--
-				}
+			action.post.voteScore--
+			return {
+				...state,
+				Posts: state.Posts.map(
+					post => (post.id === action.post.id ? action.post : post))
 			}
-			return [...state]
 
 		case EDIT_POST:
-			for (i = 0; i < state.length; i++) {
-				if (state[i].id === action.post.id) {
-					state[i].title = action.newPostTitle
-					state[i].body = action.newPostBody
-				}
+			action.post.body = action.newPostBody
+			action.post.title = action.newPostTitle
+			return {
+				...state,
+				Posts: state.Posts.map(
+					post => (post.id === action.post.id ? action.post : post))
 			}
-			return[...state]
 
 		case ADD_POST:
-			return [...state,action.post]
+			var addPost = state.Posts
+			addPost.push(action.post)
+			return {
+				...state,
+				Posts: addPost
+			}
 
 		case DEL_POST:
-			for (i = 0; i < state.length; i++) {
-				if (state[i].id === action.post.id) {
-					state.splice(i,1)
-				}
+			return {
+				...state,
+				Posts: state.Posts.filter(post => post.id !== action.post.id)
 			}
-			return [...state]
 
 		case GET_FULL_POST:
-			posts = []
-			posts[0] = action.post
-			return [...posts]
+			var tempArray = []
+			tempArray.push(action.post)
+			return {
+				...state,
+				Posts: tempArray,
+				currentPost: action.post
+			}
 
-		default:
-			return state
-	}
-}
-
-function Comments(state = {}, action) {
-	switch (action.type) {
 		case GET_ALL_COMMENTS:
-		
 			action.post.comments = action.payload
-			return {...state}
+			return {
+				...state
+			}
+
+		case SET_COMMENTS:
+			return {
+				...state,
+				Comments: action.post.comments
+			}
+
+		case PLUS_COMMENT:
+			action.comment.voteScore++
+			return {
+				...state,
+				[Posts]: {
+					...state[Posts]
+				}
+			}
+
+		case MINUS_COMMENT:
+			action.comment.voteScore--
+			return {
+				...state,
+				[Posts]: {
+					...state[Posts]
+				}
+			}
+
+		case EDIT_COMMENT:
+			action.comment.body = action.newCommentBody
+			return {
+				...state,
+				[Posts]: {
+					...state[Posts]
+				}
+			}
+
+		case DEL_COMMENT:
+		console.log(state)
+			return {
+				...state,
+					Comments: state.Comments.filter(comment => comment.id !== action.comment.id),
+			}
 
 		default:
 			return state
@@ -112,6 +178,5 @@ function Comments(state = {}, action) {
 }
 
 export default combineReducers ({
-	Posts,
-	Comments
+	Posts
 })

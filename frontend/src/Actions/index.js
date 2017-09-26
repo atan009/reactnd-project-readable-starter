@@ -10,6 +10,11 @@ export const EDIT_POST = 'EDIT_POST'
 export const ADD_POST = 'ADD_POST'
 export const DEL_POST = 'DEL_POST'
 export const GET_FULL_POST = 'GET_FULL_POST'
+export const PLUS_COMMENT = 'PLUS_COMMENT'
+export const MINUS_COMMENT = 'MINUS_COMMENT'
+export const EDIT_COMMENT = 'EDIT_COMMENT'
+export const DEL_COMMENT = 'DEL_COMMENT'
+export const SET_COMMENTS = 'SET_COMMENTS'
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
@@ -96,6 +101,11 @@ export const receiveDelPost = (post) => ({
 	post
 })
 
+export const fetchSetComments = (post) => ({
+	type: SET_COMMENTS,
+	post
+})
+
 export const fetchGetFullPost = (post_id) => dispatch => (
 	ReadableAPI.getFullPost(post_id)
 	.then((post) => dispatch(receiveGetFullPost(post)))
@@ -104,4 +114,45 @@ export const fetchGetFullPost = (post_id) => dispatch => (
 export const receiveGetFullPost = (post) => ({
 	type: GET_FULL_POST,
 	post
+})
+
+export const fetchPlusComment = (comment) => dispatch => (
+	ReadableAPI.voteComment(comment, "upVote")
+	.then(() => dispatch(receiveUpvoteComment(comment)))
+)
+
+export const receiveUpvoteComment = (comment) => ({
+	type: PLUS_COMMENT,
+	comment
+})
+
+export const fetchMinusComment = (comment) => dispatch => (
+	ReadableAPI.voteComment(comment, "downVote")
+	.then(() => dispatch(receiveMinusComment(comment)))
+)
+
+export const receiveMinusComment = (comment) => ({
+	type: MINUS_COMMENT,
+	comment
+})
+
+export const fetchEditComment = (comment, newCommentBody) => dispatch => (
+	ReadableAPI.editComment(comment, newCommentBody)
+	.then(() => dispatch(receiveEditComment(comment, newCommentBody)))
+)
+
+export const receiveEditComment = (comment, newCommentBody) => ({
+	type: EDIT_COMMENT,
+	comment,
+	newCommentBody
+})
+
+export const fetchDelComment = (comment) => dispatch => (
+	ReadableAPI.delComment(comment)
+	.then((comment) => dispatch(receiveDelComment(comment)))
+)
+
+export const receiveDelComment = (comment) => ({
+	type: DEL_COMMENT,
+	comment
 })
