@@ -122,7 +122,8 @@ function Posts (state = initialState, action) {
 		case DEL_POST:
 			return {
 				...state,
-				Posts: state.Posts.filter(post => post.id !== action.post.id)
+				Posts: state.Posts.filter(post => post.id !== action.post.id),
+				Comments: []
 			}
 
 		case GET_FULL_POST:
