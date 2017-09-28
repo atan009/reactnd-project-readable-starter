@@ -4,18 +4,35 @@ This is the starter project for the final assessment project for Udacity's Redux
 
 This repository includes the code for the backend API Server that you'll use to develop and interact with the front-end portion of the project.
 
-## Start Developing
+## Installing
 
-To get started developing right away:
+Clone the repository or download the zip and extract the files
 
 * Install and start the API server
     - `cd api-server`
     - `npm install`
     - `node server`
-* In another terminal window, use Create React App to scaffold out the front-end
-    - `create-react-app frontend`
+* In another terminal window
     - `cd frontend`
     - `npm start`
+
+## Navigating the page
+* The webpage should automatically open in the browser
+* On the main page, all posts are displayed
+* By clicking one of the categories, only those posts will be displayed
+
+## Posts
+* Upvoting/downvoting posts can be done with the +/- buttons
+* The Edit button can be used to change the title and body
+* Clicking delete removes the post as well as all the corresponding comments
+* A post can be created by clicking the add post button and clicking submit
+
+## Comments
+* Voting works the same as posts
+* The Edit button can be used to change the body
+* clicking delete removes the respecive comment
+* A comment can be created by clicking the add comment button and clicking submit
+
 
 ## API Server
 
