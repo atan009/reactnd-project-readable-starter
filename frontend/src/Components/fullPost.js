@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Link, Route } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import {
@@ -13,7 +13,8 @@ import {
   	fetchMinusComment,
   	fetchEditComment,
   	fetchDelComment,
-  	fetchSetComments
+  	fetchSetComments,
+  	filterAllPosts
 } from '../Actions'
 
 const customStyles = {
@@ -103,11 +104,11 @@ class fullPost extends Component {
           <div className="row">
             <ul className='categories col-md-12'>
                 <li className="Category col-md-3 text-center">
-                  <Link to="/">All Categories</Link>
+                  <Link to="/" onClick={self.props.filterPosts.bind(this,"all")}>All Categories</Link>
                 </li>
               {categories.map((catType) => (
                 <li key={catType} className="Category col-md-3 text-center">
-                  <Link to={`/${catType}`}>{catType}</Link>
+                  <Link to={`/${catType}`} onClick={self.props.filterPosts.bind(this,catType)}>{catType}</Link>
                 </li>
                 ))}
             </ul>
@@ -216,6 +217,7 @@ function mapDispatchToProps (dispatch) {
 	return {
 		getPost: (post_id) => dispatch(fetchGetFullPost(post_id)),
 		getComments: (post) => dispatch(fetchAllComments(post)),
+		filterPosts: (filter) => dispatch(filterAllPosts(filter)),
 	    upvotePost: (post) => dispatch(fetchPlusPost(post)),
 	    downvotePost: (post) => dispatch(fetchMinusPost(post)),
 	    editPost: (post, newPostTitle, newPostBody) => dispatch(fetchEditPost(post, newPostTitle, newPostBody)),

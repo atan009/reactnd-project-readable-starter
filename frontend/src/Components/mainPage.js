@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../CSS/mainPage.css';
 import '../CSS/bootstrap.min.css'
-import { Route, withRouter, Link } from 'react-router-dom'
+import { withRouter, Link } from 'react-router-dom'
 import { connect } from 'react-redux'
 import Modal from 'react-modal'
 import { 
@@ -12,7 +12,8 @@ import {
   sortByVoteScore,
   sortByTimestamp,
   fetchEditPost,
-  fetchDelPost} from '../Actions'
+  fetchDelPost,
+  filterAllPosts} from '../Actions'
 
 const customStyles = {
   content : {
@@ -98,20 +99,20 @@ class mainPage extends Component {
     const categories = ['react', 'redux', 'udacity']
     const { Posts } = this.props
     console.log(this.props)
+    console.log(Posts)
 
     return (
       
       <div className="container">
-      <Route exact path ='/' render={() => (
         <div>
           <div className="row">
             <ul className='categories col-md-12'>
                 <li className="Category col-md-3 text-center">
-                  <Link to="/">All Categories</Link>
+                  <Link to="/" onClick={self.props.filterPosts.bind(this,"all")}>All Categories</Link>
                 </li>
               {categories.map((catType) => (
                 <li key={catType} className="Category col-md-3 text-center">
-                  <Link to={`/${catType}`}>{catType}</Link>
+                  <Link to={`/${catType}`} onClick={self.props.filterPosts.bind(this,catType)}>{catType}</Link>
                 </li>
                 ))}
             </ul>
@@ -126,7 +127,7 @@ class mainPage extends Component {
 
           <div className="row">
             <ul className="posts col-md-12">
-              {Posts.Posts && Posts.Posts.map((post) => (
+              {Posts.Posts && Posts.Posts.filter(post => Posts.filter === "all" ? post : post.category === Posts.filter).map((post) => (
                 <li key={post.id} className="Post">
                   <h6 className="post-id">{post.id} </h6>
                   <h6 className="post-timestamp">{this.getTime(post.timestamp)} </h6>
@@ -169,7 +170,6 @@ class mainPage extends Component {
             <Link to="/addPost"><button className="addPost"> Add Post</button></Link>
           </div>
         </div>
-        )}/>
       </div>
     );
   }
@@ -185,6 +185,7 @@ function mapDispatchToProps (dispatch) {
   return {
     getPosts: () => dispatch(fetchAllPosts()),
     getComments: (post) => dispatch(fetchAllComments(post)),
+    filterPosts: (filter) => dispatch(filterAllPosts(filter)),
     upvotePost: (post) => dispatch(fetchPlusPost(post)),
     downvotePost: (post) => dispatch(fetchMinusPost(post)),
     sortVoteScore: () => dispatch(sortByVoteScore()),

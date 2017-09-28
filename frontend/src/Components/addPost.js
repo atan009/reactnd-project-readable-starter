@@ -60,7 +60,7 @@ class addPost extends Component {
 		                <select onChange={event => this.setState({category: event.target.value})} className="PostCategory">
 			            	<option value="react">react</option>
 			            	<option value="redux">redux</option>
-			            	<option value="udactiy">udactiy</option>
+			            	<option value="udacity">udacity</option>
 			            </select>
 	                </h6>
 	            </form>

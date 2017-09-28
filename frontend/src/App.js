@@ -14,18 +14,10 @@ class App extends Component {
       <Switch>
         <Route exact path ='/' component={mainPage}/>
         <Route exact path ='/addPost' component={addPost}/>
+        <Route exact path ='/:category' component={mainPage}/>
+        
         <Route exact path ='/:category/:post_id/addComment' component={addComment}/>
-        <Route path ='/:category/:post_id' component={fullPost}/>
-        <Route exact path ='/redux' render={() => (
-          <div className="row">
-            REDUX PAGE
-          </div>
-          )}/>
-        <Route exact path ='/udacity' render={() => (
-          <div className="row">
-            udacity PAGE
-          </div>
-          )}/>
+        <Route exact path ='/:category/:post_id' component={fullPost}/>
         </Switch>
       </div>
     );

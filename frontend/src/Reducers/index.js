@@ -15,11 +15,13 @@ import {
 	MINUS_COMMENT,
 	EDIT_COMMENT,
 	DEL_COMMENT,
-	ADD_COMMENT
+	ADD_COMMENT,
+	FILTER_POSTS
 } from '../Actions'
 
 const initialState = {
 	Posts: [],
+	filter: 'all',
 	sortBy: 'voteScore',
 	currentPost: null,
 	Comments: []
@@ -40,7 +42,6 @@ function Posts (state = initialState, action) {
 					}
 				}
 			}
-			console.log(state)
 			return {
 				...state,
 				Posts: posts
@@ -77,6 +78,12 @@ function Posts (state = initialState, action) {
 			return {
 				...state,
 				sortBy: "timestamp"
+			}
+
+		case FILTER_POSTS:
+			return {
+				...state,
+				filter: action.filter
 			}
 
 		case PLUS_POST:

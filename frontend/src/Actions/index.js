@@ -4,6 +4,7 @@ export const GET_ALL_POSTS = 'GET_ALL_POSTS'
 export const GET_ALL_COMMENTS = 'GET_ALL_COMMENTS'
 export const PLUS_POST = 'PLUS_POST'
 export const MINUS_POST = 'MINUS_POST'
+export const FILTER_POSTS = 'FILTER_POSTS'
 export const SORT_BY_VOTE_SCORE = 'SORT_BY_VOTE_SCORE'
 export const SORT_BY_TIMESTAMP = 'SORT_BY_TIMESTAMP'
 export const EDIT_POST = 'EDIT_POST'
@@ -16,6 +17,11 @@ export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DEL_COMMENT = 'DEL_COMMENT'
 export const SET_COMMENTS = 'SET_COMMENTS'
 export const ADD_COMMENT = 'ADD_COMMENT'
+
+export const filterAllPosts = (filter) => ({
+	type: FILTER_POSTS,
+	filter
+})
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
