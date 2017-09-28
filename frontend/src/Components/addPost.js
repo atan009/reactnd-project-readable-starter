@@ -33,15 +33,6 @@ class addPost extends Component {
 		console.log(this.state.body)
 	}
 
-	addPostCall = () => {
-		console.log(this.state.id)
-		console.log(this.state.timestamp)
-		console.log(this.state.title)	
-		console.log(this.state.body)	
-		console.log(this.state.author)	
-		console.log(this.state.category)	
-	}
-
 	render () {
 		return (
 			<div>

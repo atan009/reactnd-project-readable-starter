@@ -68,6 +68,7 @@ class mainPage extends Component {
     this.closeModal()
   }
 
+  //get all posts
   componentDidMount() {
     var self = this
     console.log(this.props)
@@ -127,6 +128,7 @@ class mainPage extends Component {
 
           <div className="row">
             <ul className="posts col-md-12">
+              {/*filter the posts by category selected*/}
               {Posts.Posts && Posts.Posts.filter(post => Posts.filter === "all" ? post : post.category === Posts.filter).map((post) => (
                 <li key={post.id} className="Post">
                   <h6 className="post-id">{post.id} </h6>

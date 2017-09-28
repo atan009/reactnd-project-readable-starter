@@ -15,19 +15,12 @@ class addComment extends Component {
 			parentId: ""
 	}
 
+	//set initial state of form
 	componentDidMount() {
 		const uuidv1 = require('uuid/v1')
 		this.setState({id: uuidv1()})
 		this.setState({timestamp: Date.now()})
 		this.setState({parentId: this.props.match.params.post_id})
-	}
-
-	addPostCall = () => {
-		console.log(this.state.id)
-		console.log(this.state.timestamp)
-		console.log(this.state.body)
-		console.log(this.state.author)
-		console.log(this.state.parentId)
 	}
 
 	render () {

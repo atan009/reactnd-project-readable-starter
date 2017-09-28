@@ -84,6 +84,7 @@ class fullPost extends Component {
       		':' + ('0' + date.getUTCSeconds()).slice(-2)
   	}
 
+  	//get post by id and store relevant comments
 	componentDidMount() {
 		var self = this
 		this.props.getPost(this.props.match.params.post_id)
@@ -198,7 +199,6 @@ class fullPost extends Component {
           	</ul>
           </div>
           <div>
-      {/*change this to addComment*/}
             <Link to={`/${this.props.match.params.category}/${this.props.match.params.post_id}/addComment`}><button className="addComment"> Add Comment</button></Link>
           </div>
         </div>

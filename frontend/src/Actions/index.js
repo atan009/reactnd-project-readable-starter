@@ -35,8 +35,6 @@ export const receivePosts = payload => ({
 
 export const fetchAllComments = (post) => dispatch => (
 	ReadableAPI.getCommentsByID(post.id)
-	// .then(payload => post.comments = payload)
-	// .then(payload => console.log(payload)/*dispatch(receiveComments(payload))*/)
 	.then(payload => dispatch(receiveComments(post, payload)))
 )
 
