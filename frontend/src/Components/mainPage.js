@@ -39,7 +39,6 @@ class mainPage extends Component {
     }
 
     this.openModal = this.openModal.bind(this)
-    this.afterOpenModal = this.afterOpenModal.bind(this)
     this.closeModal = this.closeModal.bind(this)
   }
 
@@ -49,10 +48,6 @@ class mainPage extends Component {
       curPost: post,
       newPostTitle: post.title,
       newPostBody: post.body})
-  }
-
-  afterOpenModal() {
-    //don't think this is necessary
   }
 
   closeModal() {
@@ -103,7 +98,6 @@ class mainPage extends Component {
     const categories = ['react', 'redux', 'udacity']
     const { Posts } = this.props
     console.log(this.props)
-    console.log(Posts)
 
     return (
       
@@ -147,7 +141,6 @@ class mainPage extends Component {
                   <button className="editPost" onClick={self.openModal.bind(this,post)}>Edit</button>
                     <Modal
                       isOpen={this.state.modalIsOpen}
-                      onAfterOpen={this.afterOpenModal}
                       onRequestClose={this.closeModal}
                       style={customStyles}
                       contentLabel="Example Modal"

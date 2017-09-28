@@ -124,6 +124,7 @@ class fullPost extends Component {
 	                  <Link to={`/${post.category}/${post.id}`}>
 	                    <h5>{post.title}</h5>
 	                  </Link>
+	                  <h5>{post.body}</h5>
 	                  <h6>comments({Posts.Comments ? Posts.Comments.length : 0})</h6>
 	                  <button onClick={self.props.upvotePost.bind(this,post)}>+</button>
 	                  <button onClick={self.props.downvotePost.bind(this,post)}>-</button>
@@ -197,7 +198,7 @@ class fullPost extends Component {
           </div>
           <div>
       {/*change this to addComment*/}
-            <Link to="/addPost"><button className="addPost"> Add Post</button></Link>
+            <Link to={`/${this.props.match.params.category}/${this.props.match.params.post_id}/addComment`}><button className="addComment"> Add Comment</button></Link>
           </div>
         </div>
       </div>

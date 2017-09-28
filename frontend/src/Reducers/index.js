@@ -14,7 +14,8 @@ import {
 	PLUS_COMMENT,
 	MINUS_COMMENT,
 	EDIT_COMMENT,
-	DEL_COMMENT
+	DEL_COMMENT,
+	ADD_COMMENT
 } from '../Actions'
 
 const initialState = {
@@ -166,10 +167,14 @@ function Posts (state = initialState, action) {
 			}
 
 		case DEL_COMMENT:
-		console.log(state)
 			return {
 				...state,
 					Comments: state.Comments.filter(comment => comment.id !== action.comment.id),
+			}
+
+		case ADD_COMMENT:
+			return {
+				...state
 			}
 
 		default:

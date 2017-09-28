@@ -15,6 +15,7 @@ export const MINUS_COMMENT = 'MINUS_COMMENT'
 export const EDIT_COMMENT = 'EDIT_COMMENT'
 export const DEL_COMMENT = 'DEL_COMMENT'
 export const SET_COMMENTS = 'SET_COMMENTS'
+export const ADD_COMMENT = 'ADD_COMMENT'
 
 export const fetchAllPosts = () => dispatch => (
 	ReadableAPI.getAllPosts()
@@ -154,5 +155,15 @@ export const fetchDelComment = (comment) => dispatch => (
 
 export const receiveDelComment = (comment) => ({
 	type: DEL_COMMENT,
+	comment
+})
+
+export const fetchAddComment = (comment) => dispatch => (
+	ReadableAPI.addComment(comment)
+	.then(() => dispatch(receiveAddComment(comment)))
+)
+
+export const receiveAddComment = (comment) => ({
+	type: ADD_COMMENT,
 	comment
 })
