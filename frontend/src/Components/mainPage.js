@@ -71,7 +71,6 @@ class mainPage extends Component {
   //get all posts
   componentDidMount() {
     var self = this
-    console.log(this.props)
     this.props.getPosts()
     .then(posts => posts.payload.map(post => self.props.getComments(post)))
   }
@@ -99,8 +98,6 @@ class mainPage extends Component {
     var self = this
     const categories = ['react', 'redux', 'udacity']
     const { Posts } = this.props
-    console.log(this.props)
-    console.log(Posts)
 
     return (
       

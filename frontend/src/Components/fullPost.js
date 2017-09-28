@@ -90,14 +90,12 @@ class fullPost extends Component {
 		this.props.getPost(this.props.match.params.post_id)
 		.then(action => self.props.getComments(action.post))
 		.then(action => self.props.setComments(action.post))
-		console.log(this.state)
 	}
 
 	render () {
 		var self = this
 	    const categories = ['react', 'redux', 'udacity']
 	    const { Posts } = this.props
-	    console.log(Posts)
 
     return (
       <div className="container">
